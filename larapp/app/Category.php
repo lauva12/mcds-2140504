@@ -19,4 +19,9 @@ class Category extends Model
         
     ];
 
+    Public function category(){
+
+        return $this->belongsTo('App\Category');
+    }
+
 }

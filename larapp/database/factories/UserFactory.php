@@ -16,8 +16,7 @@ use Illuminate\Support\Str;
 | model instances for testing / seeding your application's database.
 |
 */
-
-$$factory->define(User::class, function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) {
     $gender = $faker->randomElement(['male', 'female']);
     return [
         'fullname'          => $faker->name($gender),

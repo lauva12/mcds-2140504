@@ -22,4 +22,15 @@ class Game extends Model
         
         
     ];
+
+    Public function users(){
+
+        return $this->belongsTo('App\User');
+    }
+
+    Public function category(){
+
+        return $this->belongsTo('App\Category');
+    }
+
 }

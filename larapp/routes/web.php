@@ -15,4 +15,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+    dd('Hello World');
 });
+
+
+Route::get('Bienvenido!', function () {
+    return"<h1>Bienvenido Jonatan</h1>";
+    dd('Pd: empezo el paseo');
+});
+
+
+Route::get('users', function () {
+    
+    dd(App\User::all());
+});
+
+Route::get('users/{id}', function () {
+    
+    dd(App\User::find($id));
+});
+
