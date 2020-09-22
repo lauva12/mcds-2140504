@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,3 +36,19 @@ Route::get('users/{id}', function () {
     dd(App\User::find($id));
 });
 
+
+Route::get('challenge', function () {
+    foreach (App\User::all()->take(10) as $user) {
+    $years = Carbon::createFromDate($user->birthdate)->diff()->format('%y years old');
+    $since = Carbon::parse($user->created_at);
+    $rs[] = $user->fullname." - ".$years." - created ".$since->diffForHumans();
+    
+    }
+    return view ('challenge', ['rs'=>$rs]);
+    });
+
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
