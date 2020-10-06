@@ -16,18 +16,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'fullname', 
-        'phone',
-        'birthdate',
-        'gender',
-        'address',
-        'photo',
-        'email', 
-        'password',
-        'role',
-        'active'
+        'username', 'fullname', 'email', 'password', 'birthdate', 'gender', 'photo', 'role'
     ];
-
 
     /**
      * The attributes that should be hidden for arrays.
@@ -47,9 +37,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    Public function games(){
-
-        return $this->hasMany('App\Game');
+    public function articles() {
+        return $this->hasMany('App\Article');
     }
 
 }

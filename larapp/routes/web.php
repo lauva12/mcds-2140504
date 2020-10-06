@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Carbon\Carbon;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,57 +11,49 @@ use Carbon\Carbon;
 |
 */
 
+// Enrutamiento por get
+// Route::get('hello', function() {
+// 	return '<h1> Hello World! </h1>';
+// });
+// Enrutamiento con cualquier método (get/post/put/delete)
+// Route::any('user/list', function() {
+// 	$users = App\User::all();
+// 	return dd($users);
+// });
+// Enrutamiento a una vista
+//Route::view('article/list', 'articleslist', ['articles' => App\Article::all()]);
+// Enrutamiento con Parámetro
+// Route::get('user/show/{id}', function($id) {
+// 	$user = App\User::find($id);
+// 	return dd($user);
+// });
+// Enrutamiento con nombre
+// Route::get('category/list', function() {
+// 	$categories = App\Category::all();
+// 	return dd($categories);
+// })->name('categorias');
 
+/* - - - - - - - - - - - - - - - - - - - - - - */
+/* Inicio - - - - - - - - - - - - - - - - - - - */
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/', 'HomeController@welcome');
+/* - - - - - - - - - - - - - - - - - - - - - - */
+/* Users - - - - - - - - - - - - - - - - - - - */
+Route::resource('users', 'UserController');
+/* - - - - - - - - - - - - - - - - - - - - - - */
+/* Categories - - - - - - - - - - - - - - - - - - - */
+Route::resource('categories', 'CategoryController');
+/* - - - - - - - - - - - - - - - - - - - - - - */
+/* Articles - - - - - - - - - - - - - - - - - - - */
+Route::resource('articles', 'ArticleController');
 
-
-Route::get('BienvenidoJona!', function () {
-    return"<h1>Bienvenido Jonatan</h1>";
-    dd('Pd: empezo el paseo');
-});
-
-
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('saludo', function () {
-    dd("Hola mundo");
-});
-Route::get('users', function () {
-    $users = App\User::all()->take(10);
-    /// Forma de hacerlo solo con php
-    // foreach($users as $user){
-    //     $user->age = date_diff(date_create($user->birthdate), date_create(now()))->format('%y');
-    //     $yearDiff = strftime("%Y", now()->getTimestamp()) - strftime("%Y", $user->created_at->getTimestamp());
-    //     $monthDiff = strftime("%m", now()->getTimestamp()) - strftime("%m", $user->created_at->getTimestamp());
-    //     $weekDiff = strftime("%W", now()->getTimestamp()) - strftime("%W", $user->created_at->getTimestamp());
-    //     $dayDiff = strftime("%j", now()->getTimestamp())-strftime("%j", $user->created_at->getTimestamp());
-    //     $created = (($yearDiff >0) ? $yearDiff.' años ':'' ).
-    //                 (($monthDiff >0 && $monthDiff<12) ? $monthDiff.' meses ':'') .
-    //                 (($weekDiff >0 && $weekDiff <30 ) ? $weekDiff.' semanas ':'') .
-    //                 (($dayDiff >0 && $dayDiff < 7 ) ? $dayDiff.' dias ':'' );
-    //     $user->created = $created;
-    // }
-        // Forma de hacerlo con el framework
-    foreach (App\User::all()->take(10) as $user) {
-        $years = Carbon::createFromDate($user->birthdate)->diff()->format('%y years old');
-        $since = Carbon::parse($user->created_at);
-        $rs[] = $user->fullname." - ".$years." - created ".$since->diffForHumans();
-        }
-        return view('users',['rs'=>$rs]);
-});
-Route::get('users/{id}', function ($id) {
-    dd(App\User::find($id));
-});
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/examples', function () {
-    $users = App\User::all()->take(10);
-    return view('examples',['users'=>$users]);
-});
 
-Route::get('/examples', function () {
-    $users = App\User::all()->take(10);
-    $categories = App\Category::all()->take(0);
-    $games = App\Game::all();
-    return view('examples',['users'=>$users,'categories'=>$categories,'games'=>$games]);
-});
+// Ajax 
+Route::post('loadcat', 'HomeController@loadcat');
+
+// PDF
+Route::get('articlespdf', 'ArticleController@pdf');
