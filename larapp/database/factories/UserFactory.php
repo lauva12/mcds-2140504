@@ -1,9 +1,10 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
+
 use App\User;
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,14 +18,26 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(User::class, function (Faker $faker) {
+
+    $gender = $faker->randomElement($array = array('Female', 'Male'));
+    $photo  = $faker->image('public/imgs', 140, 140, 'people');
+
+    if($gender == 'Female') {
+        $name = $faker->firstNameFemale();
+    } else {
+        $name = $faker->firstNameMale();
+    }
+
     return [
-    	'username'          => $faker->username,
-        'fullname'          => $faker->name,
+        'gender'            => $gender,
+        'fullname'          => $name.' '.$faker->lastName(),
         'email'             => $faker->unique()->safeEmail,
+        'phone'             => $faker->numberBetween($min= 3101000000, $max= 3202000000),
+        'birthdate'         => $faker->dateTimeBetween($starDate = '-60 years', $endDate = '-21 years'),
+        'address'           => $faker->streetAddress(),
+        'photo'             => substr($photo, 7),
         'email_verified_at' => now(),
         'password'          => bcrypt('editor'),
-        'remember_token'    => Str::random(10),
-        'birthdate'         => $faker->date,
-        'gender'            => $faker->randomElement($array = array ('Female','Male'))
+        'remember_token'    => Str::random(2),
     ];
 });

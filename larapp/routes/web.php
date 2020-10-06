@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use \Carbon\Carbon;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,49 +13,38 @@
 |
 */
 
-// Enrutamiento por get
-// Route::get('hello', function() {
-// 	return '<h1> Hello World! </h1>';
-// });
-// Enrutamiento con cualquier método (get/post/put/delete)
-// Route::any('user/list', function() {
-// 	$users = App\User::all();
-// 	return dd($users);
-// });
-// Enrutamiento a una vista
-//Route::view('article/list', 'articleslist', ['articles' => App\Article::all()]);
-// Enrutamiento con Parámetro
-// Route::get('user/show/{id}', function($id) {
-// 	$user = App\User::find($id);
-// 	return dd($user);
-// });
-// Enrutamiento con nombre
-// Route::get('category/list', function() {
-// 	$categories = App\Category::all();
-// 	return dd($categories);
-// })->name('categorias');
+Route::get('/', function () {
+    return view('welcome');
+});
 
-/* - - - - - - - - - - - - - - - - - - - - - - */
-/* Inicio - - - - - - - - - - - - - - - - - - - */
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-Route::get('/', 'HomeController@welcome');
-/* - - - - - - - - - - - - - - - - - - - - - - */
-/* Users - - - - - - - - - - - - - - - - - - - */
-Route::resource('users', 'UserController');
-/* - - - - - - - - - - - - - - - - - - - - - - */
-/* Categories - - - - - - - - - - - - - - - - - - - */
-Route::resource('categories', 'CategoryController');
-/* - - - - - - - - - - - - - - - - - - - - - - */
-/* Articles - - - - - - - - - - - - - - - - - - - */
-Route::resource('articles', 'ArticleController');
+Route::get('helloworld', function () {
+    return "<h1>Hello World</h1>";
+});
+
+Route::get('users', function () {
+    dd(App\User::all());
+});
+
+Route::get('user/{id}', function ($id) {
+    dd(App\User::findOrFail($id));
+});
+
+Route::get('challenge', function () {
+    foreach (App\User::all()->take(10) as $user) {
+        $years = Carbon::createFromDate($user->birthdate)->diff()->format('%y years old');
+        $since = Carbon::parse($user->created_at);
+    	$rs[]  = $user->fullname." - ".$years." - created ".$since->diffForHumans();
+    }
+    return view('challenge', ['rs' => $rs]);
+});
+
+Route::get('examples', function () {
+    return view('examples');
+});
 
 Auth::routes();
+
+// Middleware
+Route::get('/{locale}', 'LocaleController@index');
+
 Route::get('/home', 'HomeController@index')->name('home');
-
-// Ajax 
-Route::post('loadcat', 'HomeController@loadcat');
-
-// PDF
-Route::get('articlespdf', 'ArticleController@pdf');

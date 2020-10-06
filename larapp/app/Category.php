@@ -6,12 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-        'name', 'description'
+        'name',
+        'image',
+        'description'
     ];
 
-    public function articles() {
-        return $this->hasMany('App\Article');
+    public function games()
+    {
+        return $this->hasMany('App\Game');
     }
+
 
 }
