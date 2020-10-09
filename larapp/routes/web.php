@@ -17,17 +17,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('helloworld', function () {
+/*Route::get('helloworld', function () {
     return "<h1>Hello World</h1>";
-});
+});*/
 
-Route::get('users', function () {
+/*Route::get('users', function () {
     dd(App\User::all());
-});
+});*/
 
-Route::get('user/{id}', function ($id) {
+/*Route::get('user/{id}', function ($id) {
     dd(App\User::findOrFail($id));
-});
+});*/
 
 Route::get('challenge', function () {
     foreach (App\User::all()->take(10) as $user) {
@@ -38,13 +38,20 @@ Route::get('challenge', function () {
     return view('challenge', ['rs' => $rs]);
 });
 
-Route::get('examples', function () {
+/*Route::get('examples', function () {
     return view('examples');
-});
+});*/
 
 Auth::routes();
 
+// Resources
+Route::resources([
+    'users'         => 'UserController',
+    //'categories'  => 'CategoryController',
+    //'games'       => 'GameController',
+]);
+
 // Middleware
-Route::get('/{locale}', 'LocaleController@index');
+Route::get('locale/{locale}', 'LocaleController@index');
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -15,7 +15,7 @@ class CreateGamesTable extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name',50)->unique();
             $table->string('image')->default('imgs/no-game.png');
             $table->text('description');
             $table->unsignedBigInteger('user_id');
