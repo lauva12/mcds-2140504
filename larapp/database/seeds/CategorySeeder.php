@@ -12,19 +12,18 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('categories')->insert([
-            'name'        => 'Xbox Serie X',
-            'description' => 'Nueva consola de Microsoft para la siguiente generación',
-            'created_at'  => now()
+        DB::table('categories')-> insert([
+
+            'name' => 'Xbox Serie X',
+            'description' => 'nueva consola de microsoft',            
+            'created_at' => now()
+
         ]);
-        DB::table('categories')->insert([
-            'name'        => 'Nintendo Switch',
-            'description' => 'Consola Híbrida de Nintendo',
-            'created_at'  => now()
-        ]);
+          
+        //eloquence
         $cat = new Category;
-        $cat->name        = 'Play Station 5';
-        $cat->description = 'Nueva consola de PlayStation para la siguiente generación';
+        $cat->name = 'PS5';
+        $cat->description = 'Play Station 5';           
         $cat->save();
 
     }

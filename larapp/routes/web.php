@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use \Carbon\Carbon;
+use Carbon\Carbon;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,41 +18,66 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/*Route::get('helloworld', function () {
-    return "<h1>Hello World</h1>";
-});*/
-
-/*Route::get('users', function () {
-    dd(App\User::all());
-});*/
-
-/*Route::get('user/{id}', function ($id) {
-    dd(App\User::findOrFail($id));
-});*/
-
-Route::get('challenge', function () {
-    foreach (App\User::all()->take(10) as $user) {
-        $years = Carbon::createFromDate($user->birthdate)->diff()->format('%y years old');
-        $since = Carbon::parse($user->created_at);
-    	$rs[]  = $user->fullname." - ".$years." - created ".$since->diffForHumans();
-    }
-    return view('challenge', ['rs' => $rs]);
+Route::get('helloworld', function () {
+    dd('Hello alejo');
 });
 
-/*Route::get('examples', function () {
-    return view('examples');
-});*/
+Route::get('users', function () {
+    dd(App\User::all()); 
+});
+
+Route::get('user/{id}', function ($id) {
+    dd(App\User::findOrFail($id)); 
+});
+
+Route::get('edades', function () {
+    $users = (App\User::all()->take(10));
+    for($i = 0; $i<count($users); $i++) {
+        $userAge = Carbon::parse($users[$i]->birthdate)->age;
+        $created = $users[$i]->created_at->diffForHumans();
+        $rs[] = $users[$i]->fullname." - "."$userAge"." years old"." - "." created ".$created."; ";   
+    }
+
+    return view('callenge', ['rs' => $rs]);
+});
+
+Route::get('examples', function() {
+    $users = (App\User::all()->take(5));
+    return view('example',['show' => 'both', 'day' => 'wednesday','users' => $users]);
+});
+
 
 Auth::routes();
 
-// Resources
-Route::resources([
-    'users'         => 'UserController',
-    //'categories'  => 'CategoryController',
-    //'games'       => 'GameController',
-]);
+// Group Middleware
+Route::group(['middleware' => 'admin'], function() {
+    // Resources
+    Route::resources([
+        'users'       => 'UserController',
+        'categories'  => 'CategoryController',
+        'games'       => 'GameController',
+    ]);
+});
 
-// Middleware
+
+Route::get('generate/pdf/users', 'UserController@pdf');
+
+Route::get('generate/pdf/games', 'GameController@pdf');
+
+Route::get('generate/excel/users', 'UserController@excel');
+
+Route::get('generate/excel/games', 'GameController@excel');
+
+Route::post('import/excel/users', 'UserController@import');
+
+Route::post('import/excel/games', 'GameController@import');
+
+Route::post('users/search', 'UserController@search');
+
+Route::post('games/search', 'GameController@search');
+
 Route::get('locale/{locale}', 'LocaleController@index');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+

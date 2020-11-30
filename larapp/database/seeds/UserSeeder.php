@@ -12,30 +12,32 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'fullname'   => 'Jeremias Springfield',
-            'email'      => 'jeremias@gmail.com',
-            'phone'      => 3107898986,
-            'birthdate'  => '1970-08-07',
-            'gender'     => 'Male',
-            'address'    => 'Avd Siempre Viva',
-            'password'   => bcrypt('admin'),
-            'role'       => 'Admin',
+        DB::table('users')-> insert([
+
+            'fullname' => 'Alejo López',
+            'email' => 'alejoloopez5@gmail.com',
+            'phone' => 3192768238,
+            'birthdate' => '1987/08/20',
+            'gender' => 'Male',
+            'address' => 'calle falsa 123',
+            'password' => bcrypt('admin'),
+            'role' => 'Admin',
             'created_at' => now()
+
         ]);
 
+        //eloquence
         $usr = new User;
-        $usr->fullname   = 'Homero Simpson';
-        $usr->email      = 'homer@gmail.com';
-        $usr->phone      = 3208765456;
-        $usr->birthdate  = '1976-02-12';
-        $usr->gender     = 'Male';
-        $usr->address    = 'Avd Siempre Viva';
-        $usr->password   = bcrypt('customer');
+        $usr->fullname = 'Manuel Gutierrez';
+        $usr->email = 'malg.nmg@hotmail.com';
+        $usr->phone = 3502487845;
+        $usr->birthdate = '1988/08/20';
+        $usr->gender = 'Male';
+        $usr->address = 'Calle verdadera 654';
+        $usr->password = bcrypt('customer');        
         $usr->save();
 
-        // Factory
-        factory(User::class, 10)->create();
-
+        //factory
+        factory(User::class, 100)->create();
     }
 }

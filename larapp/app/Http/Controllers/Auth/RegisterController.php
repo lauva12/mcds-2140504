@@ -49,38 +49,15 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        if(session()->get('locale') == 'en') {
-            $messages = array(
-                'fullname.required'  => 'The "FullName" field is required.',
-                'email.required'     => 'The "Email" field is required.',
-                'phone.required'     => 'The "PhoneNumber" field is required.',
-                'birthdate.required' => 'The "BirthDate" field is required.',
-                'gender.required'    => 'The "Gender" field is required.',
-                'address.required'   => 'The "Address" field is required.',
-                'password.required'  => 'The "Password" field is required.',
-            );
-        }
-        else {
-            $messages = array(
-                'fullname.required'  => 'El campo "Nombre Completo" es Obligatorio.',
-                'email.required'     => 'El campo "Correo Electrónico" es Obligatorio.',
-                'phone.required'     => 'El campo "Número Telefónico" es Obligatorio.',
-                'birthdate.required' => 'El campo "Fecha de Nacimiento" es Obligatorio.',
-                'gender.required'    => 'El campo "Genero" es Obligatorio.',
-                'address.required'   => 'El campo "Dierección" es Obligatorio.',
-                'password.required'  => 'El campo "Contraseña" es Obligatorio.',
-            );
-        }
-
         return Validator::make($data, [
-            'fullname'  => ['required'],
-            'email'     => ['required', 'email', 'unique:users'],
+            'fullname'  => ['required', 'string'],
+            'email'     => ['required', 'string', 'email', 'unique:users'],
             'phone'     => ['required', 'numeric'],
             'birthdate' => ['required', 'date'],
             'gender'    => ['required'],
-            'address'   => ['required',],
-            'password'  => ['required', 'min:6', 'confirmed'],
-        ], $messages);
+            'address'   => ['required', 'string'],
+            'password'  => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
     }
 
     /**
@@ -91,9 +68,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        //$data['birthdate']=$data['birthdate']->format('YYYY-mm-dd');
         //dd($data);
-
         return User::create([
             'fullname'     => $data['fullname'],
             'email'        => $data['email'],
